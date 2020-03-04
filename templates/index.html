@@ -1,0 +1,68 @@
+<html lang="en">
+<head>
+    <title>Traitement d'image</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <h1 id="title">Traitement d'image</h1>
+    <div id="form_div">
+        <form action="/" method="POST" enctype="multipart/form-data">
+    
+            <div class="form_entry">
+                <label for="img_upload">Image:</label>        
+                <input type="file" id="img_upload" name="img" accept="image/png, image/jpeg">
+            </div>
+    
+            <div class="form_entry">
+                <label for="effect">Effet à appliquer:</label>
+                <select name="effect" onchange="updateForm(this.options[this.selectedIndex].value)">
+                    <option value="sort">Tri</option>
+                    <option value="rand_row">Melange lignes</option>
+                    <option value="rand_col">Melange colonnes</option>
+                </select>
+            </div>
+            
+            <div class="form_entry "id="cluster_form" >
+                <label for="nb_clusters">Nombre de groupes:</label>
+                <input type="number" id="nb_clusters" name="clusters" min="1" max="10">
+            </div>
+            <input type="submit" value="Valider" id="submit">
+        </form>
+    </div>
+
+    <!-- <img id="res" src="lenna.png"> -->
+    <!-- <img id="res" src="{{ url_for('static', filename=img) }}"> -->
+
+    <div id="result_div">
+        <div>
+            <img id="in" src="{{ url_for('static', filename=in) }}">
+            <h3>Avant</h3>
+        </div>
+        <p>&#8649;</p>
+        <div>
+            <img id="in" src="{{ url_for('static', filename=out) }}">
+            <h3>Après</h3>
+        </div>
+    </div>
+
+    <script>
+
+    if (document.getElementById("in").getAttribute("src") === "{{ url_for('static', filename=in) }}")
+    {
+        document.getElementById("result_div").style.display = "none";
+    }
+
+    
+
+    function updateForm(chosen) {
+        console.log(chosen);
+        if (chosen === 'sort') {
+            document.getElementById("cluster_form").style.display = "block";
+        }
+        else {
+            document.getElementById("cluster_form").style.display = "none";
+        }
+    }
+    </script>
+</body>
+</html>
