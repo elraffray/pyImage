@@ -4,6 +4,8 @@ import logging
 import time
 import cv2
 import random
+import glob
+import os 
 
 logging.basicConfig(level=logging.DEBUG)
 
@@ -15,16 +17,22 @@ old_target = None
 
 @app.route('/', methods=['GET', 'POST'])
 def root():
+    global old_target
+    for fl in glob.glob('static/res_*.png'):
+        os.remove(fl)
+
     if request.method == 'GET':
         return render_template('index.html')
     elif request.method == 'POST':
         nb_clusters = request.form['clusters']
-        if nb_clusters == '':
+        if request.form['effect'] == 'sort' and nb_clusters == '':
             return render_template('index.html')
         img = request.files['img']
-        if img.filename != '':
+        if img.filename == '':
             in_name = old_target
         else:    
+            for fl in glob.glob('static/target_*'):
+                os.remove(fl)
             ext = img.mimetype.split('/')[1]
             in_name = "target_ " + str(time.time()) + "." + ext
             img.save('static/' + in_name)
