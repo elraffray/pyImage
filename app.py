@@ -29,6 +29,8 @@ def root():
             return render_template('index.html')
         img = request.files['img']
         if img.filename == '':
+            if old_target == None:
+                return render_template('index.html')
             in_name = old_target
         else:    
             for fl in glob.glob('static/target_*'):
